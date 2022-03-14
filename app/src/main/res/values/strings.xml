@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Testing</string>
+    <string name="file_picker_button">open file picker</string>
+    <string name="convert">convert</string>
+    <string name="img_descp">Image_view_for_user_uploaded_image</string>
+
+</resources>
