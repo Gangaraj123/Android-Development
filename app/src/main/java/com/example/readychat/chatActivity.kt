@@ -66,7 +66,8 @@ class chatActivity : AppCompatActivity() {
         // adding message to database
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
-            val msg_obj = senderuid?.let { it1 -> Message(message, it1) }
+            if(Is_blank(message)) return@setOnClickListener
+            val msg_obj = senderuid?.let { it1 -> Message(message.trim(), it1) }
             mdbref.child("chats").child(senderRoom!!).child("messages").push()
                 .setValue(msg_obj).addOnSuccessListener {
                     mdbref.child("chats").child(receiverRoom!!).child("messages").push()
@@ -75,5 +76,15 @@ class chatActivity : AppCompatActivity() {
             messageBox.setText("")
 
         }
+    }
+    private fun Is_blank(msg:String):Boolean
+    {
+        for(i in 0..msg.length-1)
+        {
+            if(msg[i]!=' ')
+                return false
+
+        }
+        return true
     }
 }

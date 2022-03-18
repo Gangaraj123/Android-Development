@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Hi, there"
-             android:textSize="30sp"
-             android:layout_marginTop="5dp"
-             android:id="@+id/txtview"
-             android:textStyle="bold"
-             android:layout_marginLeft="10dp"
 
-             />
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/txtview"
-        android:layout_marginTop="5dp"
-        android:background="@color/black"
-        />
-<!--    </RelativeLayout>-->
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        >
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="30dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/chat_icon" />
+        </com.google.android.material.card.MaterialCardView>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           >
+           <TextView
+            android:id="@+id/txtview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Hi, there"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            />
+           <TextView
+               android:layout_width="wrap_content"
+               android:text="Hey there , I am using Ready chat"
+               android:paddingStart="10dp"
+               android:layout_height="wrap_content"/>
+       </LinearLayout>
+
+        <!--    </RelativeLayout>-->
+
+    </LinearLayout>
 </RelativeLayout>

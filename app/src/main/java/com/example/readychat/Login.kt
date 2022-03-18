@@ -2,6 +2,7 @@ package com.example.readychat
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -37,6 +38,14 @@ class Login : AppCompatActivity() {
         btn_login.setOnClickListener {
             val email = edtEmail.text.toString().trim()
             val passwd = edtPassword.text.toString()
+            if(TextUtils.isEmpty(email)||!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                Toast.makeText(this,"Enter a valid email address",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(passwd.length<5){
+                Toast.makeText(this,"Password should be atleast 5 characters long",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             login(email, passwd)
         }
     }

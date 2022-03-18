@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation "androidx.core:core-ktx:1.7.0"
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

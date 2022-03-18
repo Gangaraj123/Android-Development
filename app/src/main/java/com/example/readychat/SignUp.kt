@@ -2,6 +2,7 @@ package com.example.readychat
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -38,6 +39,18 @@ class SignUp : AppCompatActivity() {
             val email = edtEmail.text.toString().trim()
             val password = edtPassword.text.toString()
             val name = name.text.toString().trim()
+            if(name.length<3){
+                Toast.makeText(this,"name should be atleast 3 characters long",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(TextUtils.isEmpty(email)||!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                Toast.makeText(this,"Enter a valid email address",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(password.length<5){
+                Toast.makeText(this,"Password should be atleast 5 characters long",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             signup(name,email, password)
         }
     }
@@ -55,7 +68,7 @@ class SignUp : AppCompatActivity() {
                     Log.d("", "Can't create account, ")
                     Toast.makeText(
                         this@SignUp,
-                        "Sorry, some error occured or maybe email already exists",
+                        "Email already exists",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
