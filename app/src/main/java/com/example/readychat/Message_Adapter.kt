@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 
-class Message_Adapter(val context: Context, val message_list: ArrayList<Message>) :
+class Message_Adapter(val message_list: ArrayList<Message>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val Item_Received = 1
@@ -16,10 +16,10 @@ class Message_Adapter(val context: Context, val message_list: ArrayList<Message>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 1) {
             // infalte receive
-            val view: View = LayoutInflater.from(context).inflate(R.layout.recieved, parent, false)
+            val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recieved, parent, false)
             return ReceivedViewholder(view)
         } else {
-            val view: View = LayoutInflater.from(context).inflate(R.layout.sent, parent, false)
+            val view: View = LayoutInflater.from(parent.context).inflate(R.layout.sent, parent, false)
             return sentViewholder(view)
         }
     }

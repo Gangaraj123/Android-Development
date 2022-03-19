@@ -39,7 +39,7 @@ class chatActivity : AppCompatActivity() {
         sendButton = findViewById(R.id.send_btn)
         mdbref = FirebaseDatabase.getInstance().reference
         messaglist = ArrayList()
-        messageAdapter = Message_Adapter(this, messaglist)
+        messageAdapter = Message_Adapter( messaglist)
 
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
