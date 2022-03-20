@@ -3,8 +3,15 @@
     <string name="enter_message">Enter message</string>
     <string name="title_activity_tabbed">Tabbed_Activity</string>
     <string name="tab_text_1">chats</string>
-    <string name="tab_text_2">status</string>
-    <string name="tab_text_3">calls</string>
+    <string name="tab_text_2">friends</string>
+    <string name="tab_text_3">profile</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_tag_line">connect with people</string>
+    <string name="icon_for_startup_screen_content">Icon for Startup screen</string>
+    <string name="email_hint">email</string>
+    <string name="password_hint">password</string>
+    <string name="sign_up_button">Sign Up</string>
+    <string name="name_hint">name</string>
+    <string name="no_content_description">No content description</string>
 </resources>

@@ -1,90 +1,112 @@
 package com.example.readychat
 
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
-class chatActivity : AppCompatActivity() {
+
+class ChatActivity : AppCompatActivity() {
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var messageBox: EditText
     private lateinit var sendButton: ImageView
-    private lateinit var messageAdapter: Message_Adapter
-    private lateinit var messaglist: ArrayList<Message>
-    private lateinit var mdbref: DatabaseReference
+    private lateinit var messageAdapter: MessageAdapter
+    private lateinit var messageList: ArrayList<Message>
+    private lateinit var myDatabaseReference: DatabaseReference
+    private lateinit var receiverName: TextView
+    private var imagelauncher = registerForActivityResult(OpenFileContract()) {
+        Firebase.storage
+            .reference
+    }
 
-    var receiverRoom: String? = null
-    var senderRoom: String? = null
+    private var receiverRoom: String? = null
+    private var senderRoom: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-        val name = intent.getStringExtra("name")
-        this.window.statusBarColor=this.resources.getColor(R.color.blue)
-        val receiver_uid = intent.getStringExtra("uid")
+        val name = intent.getStringExtra("receiver_name")
+
+        receiverName = findViewById(R.id.receiver_chat_title)
+        receiverName.text = name
+        val receiveruid = intent.getStringExtra("receiver_uid")
         val senderuid = FirebaseAuth.getInstance().currentUser?.uid
-        senderRoom = receiver_uid + senderuid
-        receiverRoom = senderuid + receiver_uid
-        supportActionBar?.title = name
-        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this,R.drawable.action_bar_bg))
-        chatRecyclerView = findViewById(R.id.chat_recyleview)
+        senderRoom = receiveruid + senderuid
+        receiverRoom = senderuid + receiveruid
+
+        chatRecyclerView = findViewById(R.id.chat_recyclerview)
         messageBox = findViewById(R.id.message_box)
         sendButton = findViewById(R.id.send_btn)
-        mdbref = FirebaseDatabase.getInstance().reference
-        messaglist = ArrayList()
-        messageAdapter = Message_Adapter( messaglist)
+        myDatabaseReference = FirebaseDatabase.getInstance().reference
+        messageList = ArrayList()
+        messageAdapter = MessageAdapter(messageList)
 
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
 
+
         // adding data to recyclerview
-        mdbref.child("chats").child(senderRoom!!).child("messages")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    messaglist.clear()
-                    for (postSnapshot in snapshot.children) {
-                        val message = postSnapshot.getValue(Message::class.java)
-                        messaglist.add(message!!)
-                    }
-                    messageAdapter.notifyDataSetChanged()
-                    chatRecyclerView.smoothScrollToPosition(messaglist.size) // making recycler view to scrool to bottom
+        myDatabaseReference.child("chats").child(senderRoom!!).child("messages")
+            .addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {
+                    messageList.add(dataSnapshot.getValue(Message::class.java)!!)
+                    messageAdapter.notifyItemChanged(messageList.size)
+                    chatRecyclerView.scrollToPosition(messageList.size - 1) // making recycler view to scrool to bottom
                 }
-
-                override fun onCancelled(error: DatabaseError) {
+                override fun onChildChanged(dataSnapshot: DataSnapshot, prevChildKey: String?) {}
+                override fun onChildRemoved(dataSnapshot: DataSnapshot) {
 
                 }
-
+                override fun onChildMoved(dataSnapshot: DataSnapshot, prevChildKey: String?) {}
+                override fun onCancelled(databaseError: DatabaseError) {}
             })
+
 
         // adding message to database
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
-            if(Is_blank(message)) return@setOnClickListener
-            val msg_obj = senderuid?.let { it1 -> Message(message.trim(), it1) }
-            mdbref.child("chats").child(senderRoom!!).child("messages").push()
-                .setValue(msg_obj).addOnSuccessListener {
-                    mdbref.child("chats").child(receiverRoom!!).child("messages").push()
-                        .setValue(msg_obj)
+            if (message.trim().isEmpty()) return@setOnClickListener
+            val messageObject = senderuid?.let { it1 -> Message(message.trim(), it1) }
+            myDatabaseReference.child("chats").child(senderRoom!!).child("messages").push()
+                .setValue(messageObject).addOnSuccessListener {
+                    myDatabaseReference.child("chats").child(receiverRoom!!).child("messages")
+                        .push()
+                        .setValue(messageObject)
                 }
             messageBox.setText("")
 
         }
-    }
-    private fun Is_blank(msg:String):Boolean
-    {
-        for(i in 0..msg.length-1)
-        {
-            if(msg[i]!=' ')
-                return false
 
+
+        messageBox.setOnTouchListener(OnTouchListener { _, event ->
+            val DRAWABLE_RIGHT = 2
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= messageBox.right - messageBox.compoundDrawables
+                        .get(DRAWABLE_RIGHT).bounds.width()
+                ) {
+                    imagelauncher.launch(arrayOf("image/*"))
+                    return@OnTouchListener true
+                }
+            }
+            false
         }
-        return true
+
+        )
+
+        findViewById<LinearLayout>(R.id.back_and_profile).setOnClickListener {
+            finish()
+            return@setOnClickListener
+        }
     }
+
 }

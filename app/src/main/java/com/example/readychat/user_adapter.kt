@@ -1,18 +1,18 @@
 package com.example.readychat
 
-import android.app.Activity
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.processNextEventInCurrentThread
 
-class user_adapter(val context:Context?,val user_list: ArrayList<user>) :
+class user_adapter(val context: Context?, val user_list: ArrayList<User>) :
     RecyclerView.Adapter<user_adapter.UserViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -21,22 +21,28 @@ class user_adapter(val context:Context?,val user_list: ArrayList<user>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
 
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.user_layout, parent, false)
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.user_layout, parent, false)
         return UserViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val current_user = user_list[position]
-        holder.textName.text = current_user.name
+        val currentUser = user_list[position]
+        holder.textName.text = currentUser.name
+        if(currentUser.profile_pic_uri!=null)
+        {
+            holder.Image.setImageURI(Uri.parse(currentUser.profile_pic_uri))
+        }
         holder.itemView.setOnClickListener {
-        val intent=Intent(context,chatActivity::class.java)
-        intent.putExtra("name",current_user.name)
-        intent.putExtra("uid",current_user.uid)
-        context?.startActivity(intent)
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("receiver_name", currentUser.name)
+            intent.putExtra("receiver_uid", currentUser.uid)
+            context?.startActivity(intent)
         }
     }
 
     class UserViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
-        val textName = itemview.findViewById<TextView>(R.id.txtview)
+        val textName= itemview.findViewById<TextView>(R.id.txtview)!!
+        val Image=itemview.findViewById<ImageView>(R.id.profile)
     }
 }

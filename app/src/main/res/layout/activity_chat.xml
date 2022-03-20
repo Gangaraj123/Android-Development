@@ -4,44 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".chatActivity">
+    tools:context=".ChatActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_bar_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue">
+
+        <LinearLayout
+            android:id="@+id/back_and_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/receiver_chat_title"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/chat_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/back_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_marginStart="4dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="30dp">
+
+                <ImageView
+                    android:id="@+id/profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/unknown_profile" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/receiver_chat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLength="60"
+            android:minHeight="?actionBarSize"
+            android:padding="@dimen/appbar_padding"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/back_and_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_recyleview"
-        android:layout_above="@id/linear_layout"
+        android:id="@+id/chat_recyclerview"
         android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
+        android:layout_above="@id/linear_layout"
+        android:layout_below="@id/top_bar_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/linear_layout"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
-        >
+        android:orientation="horizontal"
+        android:weightSum="100">
 
         <EditText
+            android:id="@+id/message_box"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:id="@+id/message_box"
-            android:hint="@string/enter_message"
-            android:paddingStart="10dp"
-            android:paddingEnd="0dp"
-            android:background="@drawable/message_box_bg"
             android:layout_weight="100"
-            android:layout_marginStart="10dp"
-            />
+            android:background="@drawable/message_box_bg"
+            android:drawableEnd="@drawable/image_select"
+            android:hint="@string/enter_message"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+
         <ImageView
+            android:id="@+id/send_btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/send_btn"
-            android:src="@drawable/send_icon"
-            />
+            android:contentDescription="@string/no_content_description"
+            android:src="@drawable/send_icon" />
     </LinearLayout>
 
 </RelativeLayout>

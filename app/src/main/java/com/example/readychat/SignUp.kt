@@ -1,6 +1,8 @@
 package com.example.readychat
 
+import android.content.ContentResolver
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -11,47 +13,50 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 class SignUp : AppCompatActivity() {
     private lateinit var edtEmail: EditText //declaring views
     private lateinit var edtPassword: EditText
     private lateinit var name: EditText
-    private lateinit var btn_signup: Button
+    private lateinit var signupButton: Button
     private lateinit var mAuth: FirebaseAuth   // firebase atuh
-    private lateinit var mDbRef:DatabaseReference
+    private lateinit var mDbRef: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        supportActionBar?.hide()
-        this.window.statusBarColor=this.resources.getColor(R.color.blue)
         mAuth = FirebaseAuth.getInstance()  //initialzing firebase authentication
 
         // initializing all views
         edtEmail = findViewById(R.id.edt_email)
         name = findViewById(R.id.edt_name)
         edtPassword = findViewById(R.id.edt_password)
-        btn_signup = findViewById(R.id.btn_Sign_up)
+        signupButton = findViewById(R.id.btn_Sign_up)
 
-        btn_signup.setOnClickListener {
+        signupButton.setOnClickListener {
             val email = edtEmail.text.toString().trim()
             val password = edtPassword.text.toString()
             val name = name.text.toString().trim()
-            if(name.length<3){
-                Toast.makeText(this,"name should be atleast 3 characters long",Toast.LENGTH_SHORT).show()
+            if (name.length < 3) {
+                Toast.makeText(this, "name should be atleast 3 characters long", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
-            if(TextUtils.isEmpty(email)||!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                Toast.makeText(this,"Enter a valid email address",Toast.LENGTH_SHORT).show()
+            if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+                    .matches()
+            ) {
+                Toast.makeText(this, "Enter a valid email address", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if(password.length<5){
-                Toast.makeText(this,"Password should be atleast 5 characters long",Toast.LENGTH_SHORT).show()
+            if (password.length < 5) {
+                Toast.makeText(
+                    this,
+                    "Password should be atleast 5 characters long",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
-            signup(name,email, password)
+            signup(name, email, password)
         }
     }
 
@@ -60,8 +65,8 @@ class SignUp : AppCompatActivity() {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    addUserToDatabase(name,email,mAuth.currentUser?.uid!!)
-                    val intent: Intent = Intent(this@SignUp, MainActivity::class.java)
+                    addUserToDatabase(name, email, mAuth.currentUser?.uid!!)
+                    val intent= Intent(this@SignUp, MainActivity::class.java)
                     finish()
                     startActivity(intent)
                 } else {
@@ -76,8 +81,8 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun addUserToDatabase(name: String, email: String, uid: String) {
-      mDbRef=FirebaseDatabase.getInstance().getReference()
-      mDbRef.child("user").child(uid).setValue(user(name,email,uid))
+        mDbRef = FirebaseDatabase.getInstance().reference
+        mDbRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 
 }
