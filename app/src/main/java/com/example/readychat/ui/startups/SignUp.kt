@@ -1,8 +1,6 @@
-package com.example.readychat
+package com.example.readychat.ui.startups
 
-import android.content.ContentResolver
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -10,6 +8,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.readychat.MainActivity
+import com.example.readychat.R
+import com.example.readychat.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -82,7 +83,7 @@ class SignUp : AppCompatActivity() {
 
     private fun addUserToDatabase(name: String, email: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance().reference
-        mDbRef.child("user").child(uid).setValue(User(name, email, uid))
+        mDbRef.child("users").child(uid).setValue(User(name, email, uid))
     }
 
 }

@@ -1,19 +1,24 @@
 package com.example.readychat
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.readychat.databinding.ActivityChatBinding
+import com.example.readychat.ui.main.ImgManager
+import com.example.readychat.ui.models.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.FirebaseStorage
 
 
 class ChatActivity : AppCompatActivity() {
@@ -24,23 +29,38 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageList: ArrayList<Message>
     private lateinit var myDatabaseReference: DatabaseReference
     private lateinit var receiverName: TextView
-    private var imagelauncher = registerForActivityResult(OpenFileContract()) {
-        Firebase.storage
-            .reference
+    private var imgManager=ImgManager()
+    private var imagelauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if(it.resultCode== Activity.RESULT_OK)
+        {
+            val x=it.data?.data
+            if (x != null) {
+                senderRoom?.let { it1 ->
+                    receiverRoom?.let { it2 ->
+                        imgManager.putImageInStorage(FirebaseStorage.getInstance().reference,x,
+                            it1, it2,myDatabaseReference
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private var receiverRoom: String? = null
     private var senderRoom: String? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-        val name = intent.getStringExtra("receiver_name")
+         val name = intent.getStringExtra("receiver_name")
 
         receiverName = findViewById(R.id.receiver_chat_title)
         receiverName.text = name
         val receiveruid = intent.getStringExtra("receiver_uid")
         val senderuid = FirebaseAuth.getInstance().currentUser?.uid
+
+//        Log.d("abba","received id = "+receiveruid.toString())
         senderRoom = receiveruid + senderuid
         receiverRoom = senderuid + receiveruid
 
@@ -50,7 +70,6 @@ class ChatActivity : AppCompatActivity() {
         myDatabaseReference = FirebaseDatabase.getInstance().reference
         messageList = ArrayList()
         messageAdapter = MessageAdapter(messageList)
-
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
 
@@ -61,8 +80,8 @@ class ChatActivity : AppCompatActivity() {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {
                     messageList.add(dataSnapshot.getValue(Message::class.java)!!)
                     messageAdapter.notifyItemChanged(messageList.size)
-                    chatRecyclerView.scrollToPosition(messageList.size - 1) // making recycler view to scrool to bottom
-                }
+                    chatRecyclerView.scrollToPosition(messageList.size-1)
+                 }
                 override fun onChildChanged(dataSnapshot: DataSnapshot, prevChildKey: String?) {}
                 override fun onChildRemoved(dataSnapshot: DataSnapshot) {
 
@@ -82,20 +101,26 @@ class ChatActivity : AppCompatActivity() {
                     myDatabaseReference.child("chats").child(receiverRoom!!).child("messages")
                         .push()
                         .setValue(messageObject)
+//                    Log.d("abba","Success")
+                }.addOnFailureListener()
+                {
+//                    Log.d("abba","Failed to send message")
                 }
             messageBox.setText("")
 
         }
 
-
         messageBox.setOnTouchListener(OnTouchListener { _, event ->
             val DRAWABLE_RIGHT = 2
+            val intent=Intent(Intent.ACTION_PICK)
+
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= messageBox.right - messageBox.compoundDrawables
                         .get(DRAWABLE_RIGHT).bounds.width()
                 ) {
-                    imagelauncher.launch(arrayOf("image/*"))
-                    return@OnTouchListener true
+                    val intent=Intent(Intent.ACTION_PICK)
+                    intent.type="image/*"
+                    imagelauncher.launch(intent)
                 }
             }
             false
