@@ -3,6 +3,7 @@ package com.example.readychat.ui.startups
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -10,7 +11,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.readychat.MainActivity
 import com.example.readychat.R
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class Login : AppCompatActivity() {
 
@@ -58,6 +62,20 @@ class Login : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val intent = Intent(this@Login, MainActivity::class.java)
+                    // To retrive current token
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w("abba", "Fetching FCM registration token failed", task.exception)
+                        }
+                        // Get new FCM registration token
+                        val token = task.result
+                        // Log and toast
+                        val msg= token.toString()
+                        Log.d("abba", msg)
+                        FirebaseDatabase.getInstance().reference.child("users")
+                            .child(FirebaseAuth.getInstance().uid.toString())
+                            .updateChildren(hashMapOf<String,Any>("token" to token))
+                    })
                     finish()
                     startActivity(intent)
                 } else {

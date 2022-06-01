@@ -2,8 +2,10 @@ package com.example.readychat
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -14,14 +16,19 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
  import com.example.readychat.databinding.ActivityMainBinding
+import com.example.readychat.ui.main.ImgManager
+import com.example.readychat.ui.models.User
 import com.example.readychat.ui.startups.Login
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var mauth=FirebaseAuth.getInstance()
+    private  var curr_user: User?=null
+    private lateinit var mdbRef:DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(mauth.uid==null)
@@ -30,6 +37,8 @@ class MainActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
         }
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -51,6 +60,34 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        mdbRef=FirebaseDatabase.getInstance().reference
+            mdbRef.child("users").child(mauth.uid.toString())
+                .addValueEventListener(object :ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        curr_user = snapshot.getValue(User::class.java)
+                        try {
+                            findViewById<TextView>(R.id.curr_user_name).text = curr_user?.name
+
+
+                        findViewById<TextView>(R.id.curr_user_description).text =
+                            curr_user?.about.toString()
+                        if (curr_user?.profile_pic_url != null)
+                            ImgManager.loadImageIntoView(
+                                findViewById(R.id.profile),
+                                curr_user?.profile_pic_url.toString()
+                            )
+                    }
+                        catch (e:Exception)
+                        {
+                            Log.d("abba","Some expception occured")
+                        }
+                }
+
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

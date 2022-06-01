@@ -2,7 +2,6 @@ package com.example.readychat.ui.models
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readychat.ChatActivity
 import com.example.readychat.R
-import com.example.readychat.User
+import com.example.readychat.ui.main.ImgManager
 
 class user_adapter(val context: Context?, val user_list: ArrayList<User>) :
     RecyclerView.Adapter<user_adapter.UserViewHolder>() {
-
-    override fun getItemCount(): Int {
+     override fun getItemCount(): Int {
         return user_list.size
     }
 
@@ -30,9 +28,9 @@ class user_adapter(val context: Context?, val user_list: ArrayList<User>) :
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currentUser = user_list[position]
         holder.textName.text = currentUser.name
-        if(currentUser.profile_pic_uri!=null)
+        if(currentUser.profile_pic_url!=null)
         {
-            holder.Image.setImageURI(Uri.parse(currentUser.profile_pic_uri))
+            ImgManager.loadImageIntoView(holder.Image,currentUser.profile_pic_url!!)
         }
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
@@ -40,6 +38,7 @@ class user_adapter(val context: Context?, val user_list: ArrayList<User>) :
             intent.putExtra("receiver_uid", currentUser.uid)
             context?.startActivity(intent)
         }
+
     }
 
     class UserViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {

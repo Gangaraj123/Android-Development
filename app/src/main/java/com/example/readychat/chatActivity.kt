@@ -1,13 +1,22 @@
 package com.example.readychat
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Point
+import android.graphics.Rect
+import android.graphics.RectF
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.View.OnTouchListener
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +27,9 @@ import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
+import kotlin.math.exp
 
 
 class ChatActivity : AppCompatActivity() {
@@ -29,20 +40,16 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageList: ArrayList<Message>
     private lateinit var myDatabaseReference: DatabaseReference
     private lateinit var receiverName: TextView
-    private var imgManager=ImgManager()
-    private var imagelauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    public var current_aimator:Animator?=null
+    public var shortAnimationDuration:Int=0
+     private var imagelauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode== Activity.RESULT_OK)
         {
             val x=it.data?.data
-            if (x != null) {
-                senderRoom?.let { it1 ->
-                    receiverRoom?.let { it2 ->
-                        imgManager.putImageInStorage(FirebaseStorage.getInstance().reference,x,
-                            it1, it2,myDatabaseReference
-                        )
-                    }
-                }
-            }
+            if (x!=null && senderRoom!=null && receiverRoom!=null)
+                ImgManager.putImageInStorage(FirebaseStorage.getInstance().reference, x,
+                    senderRoom!!, receiverRoom!!,myDatabaseReference)
+
         }
     }
 
@@ -54,7 +61,7 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
          val name = intent.getStringExtra("receiver_name")
-
+        shortAnimationDuration=resources.getInteger(android.R.integer.config_shortAnimTime)
         receiverName = findViewById(R.id.receiver_chat_title)
         receiverName.text = name
         val receiveruid = intent.getStringExtra("receiver_uid")
@@ -72,7 +79,7 @@ class ChatActivity : AppCompatActivity() {
         messageAdapter = MessageAdapter(messageList)
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
-
+        
 
         // adding data to recyclerview
         myDatabaseReference.child("chats").child(senderRoom!!).child("messages")
@@ -112,8 +119,6 @@ class ChatActivity : AppCompatActivity() {
 
         messageBox.setOnTouchListener(OnTouchListener { _, event ->
             val DRAWABLE_RIGHT = 2
-            val intent=Intent(Intent.ACTION_PICK)
-
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= messageBox.right - messageBox.compoundDrawables
                         .get(DRAWABLE_RIGHT).bounds.width()

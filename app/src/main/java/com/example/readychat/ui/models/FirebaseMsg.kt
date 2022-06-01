@@ -1,0 +1,25 @@
+package com.example.readychat.ui.models
+
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessagingService
+
+class FirebaseMsg : FirebaseMessagingService() {
+
+    override fun onNewToken(token: String) {
+        Log.d("abba", "Refreshed token: $token")
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // FCM registration token to your app server.
+        Log.d("abba", "token genereted = $token")
+        sendRegistrationToServer(token)
+    }
+
+    private fun sendRegistrationToServer(token: String) {
+        FirebaseDatabase.getInstance().reference.child("users")
+            .child(FirebaseAuth.getInstance().uid.toString())
+            .updateChildren(hashMapOf<String,Any>("token" to token))
+    }
+}

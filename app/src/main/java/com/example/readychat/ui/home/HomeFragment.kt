@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.readychat.User
+import com.example.readychat.ui.models.User
 import com.example.readychat.databinding.FragmentHomeBinding
 import com.example.readychat.ui.models.user_adapter
 import com.google.firebase.auth.FirebaseAuth
