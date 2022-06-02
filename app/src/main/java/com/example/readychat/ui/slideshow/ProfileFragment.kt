@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.readychat.databinding.FragmentProfileBinding
 import com.example.readychat.ui.main.ImgManager
@@ -18,6 +20,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.yalantis.ucrop.UCrop
+import java.io.File
+import java.util.*
+
+public var result_Uri: Uri? = null
 
 class ProfileFragment : Fragment() {
 
@@ -39,13 +46,26 @@ class ProfileFragment : Fragment() {
     private var imagelauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                curr_img_uri = it.data?.data
-                profile_pic_edit.setImageURI(it.data?.data)
+                val fileuri = it.data?.data!!
+                val destUri = StringBuilder(UUID.randomUUID().toString()).append(".jpg")
+                    .toString()
+                val options = UCrop.Options()
+                UCrop.of(fileuri, Uri.fromFile(File(context?.cacheDir , destUri)))
+                    .withOptions(options)
+                    .withAspectRatio(0F, 0F)
+                    .useSourceImageAspectRatio()
+                    .withMaxResultSize(2000, 2000)
+                    .start((context as Activity))
+                //                val intent=Intent(context,CropperActivity::class.java)
+//                intent.putExtra("ImageUri",curr_img_uri.toString())
+//                startActivity(intent)
+
             }
         }
 
     // This property is only valid between onCreateView and
     // onDestroyView.
+    private val profileViewModel:ProfileViewModel by activityViewModels()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -145,8 +165,16 @@ class ProfileFragment : Fragment() {
             intent.type = "image/*"
             imagelauncher.launch(intent)
         })
+        profileViewModel.text.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            val uri=Uri.parse(it)
+            curr_img_uri=uri
+            profile_pic_edit.setImageURI(curr_img_uri)
+        })
     }
+    fun Update(str:String){
 
+            Toast.makeText(context,"Hey, we got = "+str,Toast.LENGTH_SHORT).show()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

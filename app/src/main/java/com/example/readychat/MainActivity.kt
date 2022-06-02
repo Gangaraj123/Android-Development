@@ -6,34 +6,39 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
- import com.example.readychat.databinding.ActivityMainBinding
+import com.example.readychat.databinding.ActivityMainBinding
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.User
+import com.example.readychat.ui.slideshow.ProfileFragment
+import com.example.readychat.ui.slideshow.ProfileViewModel
 import com.example.readychat.ui.startups.Login
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.yalantis.ucrop.UCrop
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private var mauth=FirebaseAuth.getInstance()
-    private  var curr_user: User?=null
-    private lateinit var mdbRef:DatabaseReference
+    private var mauth = FirebaseAuth.getInstance()
+    private var curr_user: User? = null
+    private lateinit var mdbRef: DatabaseReference
+    private lateinit var profileFragment: ProfileFragment
+    private val profViewModel: ProfileViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(mauth.uid==null)
-        {
-            val intent: Intent=Intent(this@MainActivity,Login::class.java)
+        if (mauth.uid == null) {
+            val intent: Intent = Intent(this@MainActivity, Login::class.java)
             finish()
             startActivity(intent)
         }
@@ -60,13 +65,13 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        mdbRef=FirebaseDatabase.getInstance().reference
-            mdbRef.child("users").child(mauth.uid.toString())
-                .addValueEventListener(object :ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        curr_user = snapshot.getValue(User::class.java)
-                        try {
-                            findViewById<TextView>(R.id.curr_user_name).text = curr_user?.name
+        mdbRef = FirebaseDatabase.getInstance().reference
+        mdbRef.child("users").child(mauth.uid.toString())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    curr_user = snapshot.getValue(User::class.java)
+                    try {
+                        findViewById<TextView>(R.id.curr_user_name).text = curr_user?.name
 
 
                         findViewById<TextView>(R.id.curr_user_description).text =
@@ -76,18 +81,16 @@ class MainActivity : AppCompatActivity() {
                                 findViewById(R.id.profile),
                                 curr_user?.profile_pic_url.toString()
                             )
+                    } catch (e: Exception) {
+                        Log.d("abba", "Some expception occured")
                     }
-                        catch (e:Exception)
-                        {
-                            Log.d("abba","Some expception occured")
-                        }
                 }
 
 
-                    override fun onCancelled(error: DatabaseError) {
+                override fun onCancelled(error: DatabaseError) {
 
-                    }
-                })
+                }
+            })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -96,17 +99,31 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            try {
+
+                profViewModel.setData(UCrop.getOutput(data!!).toString())
+            } catch (e: Exception) {
+                Log.d("abba", "error occured = " + e.message)
+            }
+
+
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId==R.id.logout)
-        {
+        if (item.itemId == R.id.logout) {
             FirebaseAuth.getInstance().signOut()
-            val intent: Intent=Intent(this@MainActivity,Login::class.java)
+            val intent: Intent = Intent(this@MainActivity, Login::class.java)
             finish()
             startActivity(intent)
             return true
         }
         return super.onOptionsItemSelected(item)
     }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()

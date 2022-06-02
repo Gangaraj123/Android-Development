@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.readychat">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,11 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReadyChat">
-
+        <activity
+            android:name="com.example.readychat.ui.main.CropperActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-             android:theme="@style/Theme.ReadyChat.NoActionBar">
+            android:theme="@style/Theme.ReadyChat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,8 +38,13 @@
             android:exported="true" />
         <activity
             android:name=".ui.startups.StartScreen"
-            android:exported="false"
-            />
+            android:exported="false" />
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <service
             android:name="com.google.firebase.messaging.FirebaseMessagingService"
             android:exported="false">

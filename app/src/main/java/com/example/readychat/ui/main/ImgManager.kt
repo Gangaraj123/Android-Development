@@ -1,5 +1,6 @@
 package com.example.readychat.ui.main
 
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -15,7 +16,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-
 
 internal object ImgManager {
     fun putImageInStorage(

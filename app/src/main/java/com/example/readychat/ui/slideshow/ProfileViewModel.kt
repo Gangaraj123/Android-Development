@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 
 class ProfileViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+    private val _text=MutableLiveData<String>()
+    val text:LiveData<String> get()=_text
+    fun setData(str:String)
+    {
+        _text.value=str
+
     }
-    val text: LiveData<String> = _text
 }

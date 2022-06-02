@@ -1,35 +1,31 @@
 package com.example.readychat
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Point
-import android.graphics.Rect
-import android.graphics.RectF
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.view.View.OnTouchListener
-import android.view.animation.DecelerateInterpolator
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.readychat.databinding.ActivityChatBinding
+import com.example.readychat.ui.main.CropperActivity
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
-import kotlin.math.exp
+import com.yalantis.ucrop.UCrop
+import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ChatActivity : AppCompatActivity() {
@@ -40,15 +36,28 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageList: ArrayList<Message>
     private lateinit var myDatabaseReference: DatabaseReference
     private lateinit var receiverName: TextView
+    private lateinit var source:Uri
+    private lateinit var dest:Uri
     public var current_aimator:Animator?=null
-    public var shortAnimationDuration:Int=0
+     public var shortAnimationDuration:Int=0
      private var imagelauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode== Activity.RESULT_OK)
         {
-            val x=it.data?.data
-            if (x!=null && senderRoom!=null && receiverRoom!=null)
-                ImgManager.putImageInStorage(FirebaseStorage.getInstance().reference, x,
-                    senderRoom!!, receiverRoom!!,myDatabaseReference)
+              source=it.data?.data!!
+            val destUri=StringBuilder(UUID.randomUUID().toString()).append(".jpg")
+                .toString()
+            val options=UCrop.Options()
+            UCrop.of(source,Uri.fromFile(File(cacheDir,destUri)))
+                .withOptions(options)
+                .withAspectRatio(0F,0F)
+                .useSourceImageAspectRatio()
+                .withMaxResultSize(2000,2000)
+                .start(this@ChatActivity)
+
+//            val intent=Intent(this@ChatActivity,CropperActivity::class.java)
+//            intent.putExtra("Data",source.toString())
+
+
 
         }
     }
@@ -126,6 +135,7 @@ class ChatActivity : AppCompatActivity() {
                     val intent=Intent(Intent.ACTION_PICK)
                     intent.type="image/*"
                     imagelauncher.launch(intent)
+
                 }
             }
             false
@@ -136,6 +146,18 @@ class ChatActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.back_and_profile).setOnClickListener {
             finish()
             return@setOnClickListener
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode== RESULT_OK&&requestCode==UCrop.REQUEST_CROP)
+        {
+            val resultUri:Uri?=  data?.let { UCrop.getOutput(it) }
+                        if (resultUri !=null && senderRoom!=null && receiverRoom!=null)
+                ImgManager.putImageInStorage(
+                    FirebaseStorage.getInstance().reference, resultUri,
+                    senderRoom!!, receiverRoom!!,myDatabaseReference)
         }
     }
 
