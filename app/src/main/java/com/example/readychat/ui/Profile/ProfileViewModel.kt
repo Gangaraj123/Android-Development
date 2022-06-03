@@ -1,4 +1,4 @@
-package com.example.readychat.ui.slideshow
+package com.example.readychat.ui.Profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

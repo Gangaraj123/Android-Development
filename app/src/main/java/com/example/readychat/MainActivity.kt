@@ -17,8 +17,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.readychat.databinding.ActivityMainBinding
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.User
-import com.example.readychat.ui.slideshow.ProfileFragment
-import com.example.readychat.ui.slideshow.ProfileViewModel
+import com.example.readychat.ui.Profile.ProfileFragment
+import com.example.readychat.ui.Profile.ProfileViewModel
 import com.example.readychat.ui.startups.Login
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -50,8 +50,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+            val intent=Intent(this@MainActivity,addFreinds::class.java)
+            startActivity(intent)
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -60,13 +62,13 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_requests, R.id.nav_profile
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         mdbRef = FirebaseDatabase.getInstance().reference
-        mdbRef.child("users").child(mauth.uid.toString())
+        mdbRef.child("users").child(mauth.uid.toString()).child("user_details")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     curr_user = snapshot.getValue(User::class.java)

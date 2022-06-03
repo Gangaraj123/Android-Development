@@ -23,12 +23,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.Message
 import com.google.common.io.Resources
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MessageAdapter(private val message_list: ArrayList<Message>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      private val itemReceivedImg = 1
     private val itemReceivedMsg=2
+    private lateinit var temp_timeStamp:Date
+    private val simpleDateFormat=SimpleDateFormat("HH:mm aa")
     private val itemSentImg=3
     private var current_aimator:Animator?=null
     private var shortAnimationDuration:Int=0
@@ -71,13 +77,23 @@ class MessageAdapter(private val message_list: ArrayList<Message>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = message_list[position]
+        temp_timeStamp=Date(currentMessage.timestamp)
         if (holder.javaClass == SentViewholder::class.java) // for sent view holder
         {
             holder as SentViewholder
             holder.sentmessage.text = currentMessage.message
+            try{
+                holder.timeview.text=simpleDateFormat.format(temp_timeStamp)
+            }
+            catch (e:Exception){}
+
         } else if(holder.javaClass==SentImgViewholder::class.java)
         {
             holder as SentImgViewholder
+            try{
+                holder.timeview.text=simpleDateFormat.format(temp_timeStamp)
+            }
+            catch (e:Exception){}
             if(currentMessage.ImageUrl==null)
                 holder.sentimg.setImageResource(R.drawable.imgload)
             else
@@ -89,10 +105,19 @@ class MessageAdapter(private val message_list: ArrayList<Message>) :
         else if(holder.javaClass==ReceivedViewholder::class.java)
         {
             holder as ReceivedViewholder
+            try{
+                holder.timeview.text=simpleDateFormat.format(temp_timeStamp)
+            }
+            catch (e:Exception){}
             holder.receiverMessage.text = currentMessage.message
         }
         else {
             holder as ReceivedImgViewholder
+            try{
+
+                holder.timeview.text=simpleDateFormat.format(temp_timeStamp)
+            }
+            catch (e:Exception){}
             if(currentMessage.ImageUrl==null)
                 holder.receiverimg.setImageResource(R.drawable.imgload)
             else
@@ -203,15 +228,19 @@ class MessageAdapter(private val message_list: ArrayList<Message>) :
 
     class SentViewholder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         val sentmessage = itemview.findViewById<TextView>(R.id.txt_sent_msg)!!
+        val timeview=itemview.findViewById<TextView>(R.id.time_view)
     }
     class SentImgViewholder(itemview: View) : RecyclerView.ViewHolder(itemview) {
+        val timeview=itemview.findViewById<TextView>(R.id.time_view)
         val sentimg = itemview.findViewById<ImageView>(R.id.SmessageImageView)!!
     }
 
     class ReceivedViewholder(itemview: View) : RecyclerView.ViewHolder(itemview) {
+        val timeview=itemview.findViewById<TextView>(R.id.time_view)
         val receiverMessage = itemview.findViewById<TextView>(R.id.txt_rec_msg)!!
     }
     class ReceivedImgViewholder(itemview: View) : RecyclerView.ViewHolder(itemview) {
+        val timeview=itemview.findViewById<TextView>(R.id.time_view)
         val receiverimg = itemview.findViewById<ImageView>(R.id.RmessageImageView)!!
     }
 }

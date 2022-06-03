@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.readychat.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_requests"
+        android:name="com.example.readychat.ui.Requests.RequestsFragment"
+        android:label="Requests"
+        tools:layout="@layout/fragment_requests" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.readychat.ui.slideshow.ProfileFragment"
-        android:label="@string/menu_slideshow"
+        android:id="@+id/nav_profile"
+        android:name="com.example.readychat.ui.Profile.ProfileFragment"
+        android:label="Profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

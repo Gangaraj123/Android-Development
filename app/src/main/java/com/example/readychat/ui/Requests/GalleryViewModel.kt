@@ -1,4 +1,4 @@
-package com.example.readychat.ui.gallery
+package com.example.readychat.ui.Requests
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

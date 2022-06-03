@@ -13,6 +13,7 @@ import com.example.readychat.databinding.FragmentHomeBinding
 import com.example.readychat.ui.models.user_adapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 
 class HomeFragment : Fragment() {
 
@@ -50,14 +51,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mdbRef.child("users").addChildEventListener(object : ChildEventListener {
+        mdbRef.child("users").child(mauth.uid!!).child("friends_list")
+            .addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {
                 if(loadGif.visibility==View.VISIBLE) loadGif.visibility=View.GONE
-                val item=dataSnapshot.getValue(User::class.java)!!
-                if(item.uid!=mauth.uid) {
-                    userList.add(item)
-                    adapter.notifyItemChanged(userList.size)
+                val uid=dataSnapshot.key
+                var item:User
+                if (uid != null) {
+                    mdbRef.child("users").child(uid).child("user_details")
+                        .get().addOnSuccessListener {
+                            item= it.getValue(User::class.java)!!
+                            if(item.uid!=mauth.uid) {
+                                userList.add(item)
+                                adapter.notifyItemChanged(userList.size)
+                            }
+                        }
                 }
+
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, prevChildKey: String?) {}

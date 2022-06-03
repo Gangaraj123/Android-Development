@@ -5,20 +5,39 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"    >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_rec_msg"
             android:text="This is my messsage"
             android:maxWidth="300dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/white"
-            android:padding="10dp"
+            android:padding="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/darkblue_bg"
+            android:background="@drawable/dark_black_bg"
             />
 
+            <TextView
+                android:id="@+id/time_view"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:text="10:20 Pm"
+                android:textColor="@color/black"
+                />
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:gravity="center"
+    android:gravity="center"    android:background="#E4E3E3"
+
     android:id="@+id/chat_act_layout"
     android:layout_height="match_parent"
     tools:context="com.example.readychat.ChatActivity">
@@ -73,11 +74,13 @@
         android:id="@+id/chat_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_above="@id/linear_layout"
         android:layout_below="@id/top_bar_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/recieved" />
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -92,6 +95,9 @@
         <EditText
             android:id="@+id/message_box"
             android:layout_width="0dp"
+            android:backgroundTint="@color/white"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
             android:layout_height="50dp"
             android:layout_weight="100"
             android:background="@drawable/message_box_bg"
@@ -102,12 +108,21 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp" />
 
-        <ImageView
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:cardCornerRadius="30dp"
+        >
+        <ImageButton
             android:id="@+id/send_btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@color/blue"
             android:contentDescription="@string/no_content_description"
-            android:src="@drawable/send_icon" />
+            android:src="@drawable/ic_send"
+            />
+    </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
      <ImageView

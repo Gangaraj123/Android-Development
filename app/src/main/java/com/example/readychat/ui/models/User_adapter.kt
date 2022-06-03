@@ -36,6 +36,8 @@ class user_adapter(val context: Context?, val user_list: ArrayList<User>) :
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("receiver_name", currentUser.name)
             intent.putExtra("receiver_uid", currentUser.uid)
+            if(currentUser.profile_pic_url!=null)
+            intent.putExtra("profile_url",currentUser.profile_pic_url)
             context?.startActivity(intent)
         }
 

@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ReadyChat">
         <activity
-            android:name="com.example.readychat.ui.main.CropperActivity"
+            android:name=".addFreinds"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.CropperActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -39,7 +42,6 @@
         <activity
             android:name=".ui.startups.StartScreen"
             android:exported="false" />
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="fullSensor"

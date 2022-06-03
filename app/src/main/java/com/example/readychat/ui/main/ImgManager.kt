@@ -63,11 +63,11 @@ internal object ImgManager {
                 .addOnSuccessListener {
                     it.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
                         user.profile_pic_url = it.toString()
-                        databaseReference.child("users").child(user.uid!!)
+                        databaseReference.child("users").child(user.uid!!).child("user_details")
                             .setValue(user)
                     }
                 }
-        } else databaseReference.child("users").child(user.uid!!)
+        } else databaseReference.child("users").child(user.uid!!).child("user_details")
             .setValue(user)
     }
 

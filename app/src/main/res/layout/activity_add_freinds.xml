@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E4E3E3"
+    tools:context=".addFreinds">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/search_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="100"
+                android:hint="Enter email Id to serch"
+                android:minHeight="60dp"
+                android:padding="15dp" />
+
+            <com.flod.loadingbutton.LoadingButton
+                android:id="@+id/search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:textAlignment="center"
+                android:background="@drawable/solid_blue"
+                app:enableRestore="true"
+                android:text="search"
+                android:textSize="20sp"
+                app:disableClickOnLoading="true" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searched_user_details"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialCardView2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/found_user_email"
+                android:text="gangarajbopparam@gmail.com"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/found_user_name"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/black"
+                android:text="lskjdflklskdflkj"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/foudn_user_about"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="Hey there I am using Ready chat!"
+                />
+            <com.flod.loadingbutton.LoadingButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/req_send_btn"
+                android:background="#00ff00"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                app:enableRestore="true"
+                app:endSuccessDrawable="@drawable/ic_baseline_add_task_24"
+                app:endFailDrawable="@drawable/ic_baseline_failed"
+                android:text="Add request"
+                />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

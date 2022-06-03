@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.readychat.R
-import com.example.readychat.ui.slideshow.result_Uri
+import com.example.readychat.ui.Profile.result_Uri
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.util.*

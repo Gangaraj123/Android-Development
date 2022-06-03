@@ -20,7 +20,7 @@ class Login : AppCompatActivity() {
 
     private lateinit var edtEmail: EditText //declaring views
     private lateinit var edtPassword: EditText
-    private lateinit var loginButton: Button
+    private lateinit var loginButton: com.flod.loadingbutton.LoadingButton
     private lateinit var signupButton: TextView
     private lateinit var mAuth: FirebaseAuth   // firebase atuh
 
@@ -56,7 +56,7 @@ class Login : AppCompatActivity() {
     }
 
     private fun login(email: String, password: String) {
-
+            loginButton.start()
         // logging the current user
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -76,10 +76,12 @@ class Login : AppCompatActivity() {
                             .child(FirebaseAuth.getInstance().uid.toString())
                             .updateChildren(hashMapOf<String,Any>("token" to token))
                     })
+                    loginButton.complete(true)
                     finish()
                     startActivity(intent)
                 } else {
                     Toast.makeText(this@Login, "Invalid credentials", Toast.LENGTH_SHORT).show()
+                    loginButton.complete(false)
                 }
             }
     }

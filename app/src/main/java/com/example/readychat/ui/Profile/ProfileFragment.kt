@@ -1,4 +1,4 @@
-package com.example.readychat.ui.slideshow
+package com.example.readychat.ui.Profile
 
 import android.app.Activity
 import android.content.Intent
@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.readychat.databinding.FragmentProfileBinding
 import com.example.readychat.ui.main.ImgManager
@@ -94,14 +93,14 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mdbref = FirebaseDatabase.getInstance().reference
         storageReference = FirebaseStorage.getInstance().reference
-        mdbref.child("users").child(FirebaseAuth.getInstance().uid.toString()).get()
+        mdbref.child("users").child(FirebaseAuth.getInstance().uid.toString()).child("user_details").get()
             .addOnSuccessListener {
                 curruser = it.getValue(User::class.java)!!
                 profile_name.text = curruser.name
                 profile_about.text = curruser.about
                 profile_email.text = curruser.email.toString()
             }
-        mdbref.child("users").child(FirebaseAuth.getInstance().uid.toString())
+        mdbref.child("users").child(FirebaseAuth.getInstance().uid.toString()).child("user_details")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     curruser = snapshot.getValue(User::class.java)!!

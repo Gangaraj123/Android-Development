@@ -14,12 +14,13 @@ import com.example.readychat.ui.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlin.math.sign
 
 class SignUp : AppCompatActivity() {
     private lateinit var edtEmail: EditText //declaring views
     private lateinit var edtPassword: EditText
     private lateinit var name: EditText
-    private lateinit var signupButton: Button
+    private lateinit var signupButton: com.flod.loadingbutton.LoadingButton
     private lateinit var mAuth: FirebaseAuth   // firebase atuh
     private lateinit var mDbRef: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,16 +63,19 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun signup(name: String, email: String, password: String) {
+        signupButton.start()
         // creating new user
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     addUserToDatabase(name, email, mAuth.currentUser?.uid!!)
                     val intent= Intent(this@SignUp, MainActivity::class.java)
+                    signupButton.complete(true)
                     finish()
                     startActivity(intent)
                 } else {
                     Log.d("", "Can't create account, ")
+                    signupButton.complete(false)
                     Toast.makeText(
                         this@SignUp,
                         "Email already exists",
@@ -83,7 +87,7 @@ class SignUp : AppCompatActivity() {
 
     private fun addUserToDatabase(name: String, email: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance().reference
-        mDbRef.child("users").child(uid).setValue(User(name, email, uid))
+        mDbRef.child("users").child(uid).child("user_details").setValue(User(name, email, uid))
     }
 
 }

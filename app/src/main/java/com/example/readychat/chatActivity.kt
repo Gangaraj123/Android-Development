@@ -8,10 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.readychat.ui.main.CropperActivity
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.Message
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -31,7 +29,7 @@ import kotlin.collections.ArrayList
 class ChatActivity : AppCompatActivity() {
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var messageBox: EditText
-    private lateinit var sendButton: ImageView
+    private lateinit var sendButton: ImageButton
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var messageList: ArrayList<Message>
     private lateinit var myDatabaseReference: DatabaseReference
@@ -64,14 +62,18 @@ class ChatActivity : AppCompatActivity() {
 
     private var receiverRoom: String? = null
     private var senderRoom: String? = null
-
+    private lateinit var profile:ImageView
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
          val name = intent.getStringExtra("receiver_name")
+        val url=intent.getStringExtra("profile_url")
         shortAnimationDuration=resources.getInteger(android.R.integer.config_shortAnimTime)
         receiverName = findViewById(R.id.receiver_chat_title)
+        profile=findViewById(R.id.profile)
+        if(url!=null)
+        ImgManager.loadImageIntoView(profile,url)
         receiverName.text = name
         val receiveruid = intent.getStringExtra("receiver_uid")
         val senderuid = FirebaseAuth.getInstance().currentUser?.uid
@@ -91,10 +93,10 @@ class ChatActivity : AppCompatActivity() {
         
 
         // adding data to recyclerview
-        myDatabaseReference.child("chats").child(senderRoom!!).child("messages")
+        myDatabaseReference.child("chats").child(senderRoom!!).child(   "messages")
             .addChildEventListener(object : ChildEventListener {
-                override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {
-                    messageList.add(dataSnapshot.getValue(Message::class.java)!!)
+                override fun onChildAdded(dataSnapshot:     DataSnapshot, prevChildKey: String?) {
+                        messageList.add(dataSnapshot.getValue(Message::class.java)!!)
                     messageAdapter.notifyItemChanged(messageList.size)
                     chatRecyclerView.scrollToPosition(messageList.size-1)
                  }
@@ -111,7 +113,7 @@ class ChatActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
             if (message.trim().isEmpty()) return@setOnClickListener
-            val messageObject = senderuid?.let { it1 -> Message(message.trim(), it1) }
+            val messageObject = senderuid?.let { it1 -> Message(message.trim(), it1,null)}
             myDatabaseReference.child("chats").child(senderRoom!!).child("messages").push()
                 .setValue(messageObject).addOnSuccessListener {
                     myDatabaseReference.child("chats").child(receiverRoom!!).child("messages")
