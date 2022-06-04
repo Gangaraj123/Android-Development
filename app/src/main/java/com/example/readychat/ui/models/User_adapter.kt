@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readychat.ChatActivity
 import com.example.readychat.R
+import com.example.readychat.ui.main.ImageZoom
 import com.example.readychat.ui.main.ImgManager
 
 class user_adapter(val context: Context?, val user_list: ArrayList<User>) :
@@ -40,7 +41,11 @@ class user_adapter(val context: Context?, val user_list: ArrayList<User>) :
             intent.putExtra("profile_url",currentUser.profile_pic_url)
             context?.startActivity(intent)
         }
-
+        holder.Image.setOnClickListener{
+            val inent=Intent(context,ImageZoom::class.java)
+            inent.putExtra("imgurl",currentUser.profile_pic_url)
+            context?.startActivity(inent)
+        }
     }
 
     class UserViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {

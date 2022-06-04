@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/chat_act_layout"
-    android:layout_width="match_parent"
+     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#E4E3E3"
+    android:id="@+id/top_frame_layout"
+    android:orientation="vertical"
     android:weightSum="100"
     tools:context="com.example.readychat.ChatActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:id="@+id/chat_act_layout"
+    android:layout_height="match_parent"
+    android:background="#E4E3E3"
+    android:orientation="vertical"
+    android:weightSum="100"
+ >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_bar_chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@color/blue"
- >
+        android:background="@color/blue">
 
         <LinearLayout
             android:id="@+id/back_and_profile"
@@ -83,17 +91,16 @@
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         android:layout_margin="5dp"
+        android:layout_margin="5dp"
         android:orientation="horizontal"
-        android:weightSum="100"
-        >
+        android:weightSum="100">
 
         <EditText
             android:id="@+id/message_box"
             android:layout_width="0dp"
-           android:layout_height="50dp"
-            android:layout_marginStart="5dp"
+            android:layout_height="50dp"
             android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="100"
             android:background="@drawable/message_box_bg"
@@ -108,7 +115,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_gravity="center_vertical"
             app:cardCornerRadius="30dp">
 
             <ImageButton
@@ -121,11 +128,13 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
-    <ImageView
+</LinearLayout>
+    <com.ortiz.touchview.TouchImageView
         android:id="@+id/zoomed_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="100"
         android:background="@color/black"
         android:src="@drawable/unknown_profile"
         android:visibility="gone" />
-</LinearLayout>
+</FrameLayout>

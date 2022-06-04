@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loading"
         android:layout_width="60dp"
@@ -18,9 +19,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userRecyclerView"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         tools:listitem="@layout/user_layout" />
 
 

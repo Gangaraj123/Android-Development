@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.Message
+import com.example.readychat.ui.models.MessageAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -109,7 +110,7 @@ class ChatActivity : AppCompatActivity() {
 
 
         // adding message to database
-        sendButton.setOnClickListener {
+        sendButton.setOnClickListener qq{
             val message = messageBox.text.toString()
             if (message.trim().isEmpty()) return@setOnClickListener
             val messageObject = senderuid?.let { it1 -> Message(message.trim(), it1,null)}
@@ -118,6 +119,12 @@ class ChatActivity : AppCompatActivity() {
                     myDatabaseReference.child("chats").child(receiverRoom!!).child("messages")
                         .push()
                         .setValue(messageObject)
+                        .addOnSuccessListener {
+                            myDatabaseReference.child("users").child(receiveruid!!).child("friends_list")
+                                .child(senderuid!!).setValue(System.currentTimeMillis())
+                            myDatabaseReference.child("users").child(senderuid!!).child("friends_list")
+                                .child(receiveruid!!).setValue(System.currentTimeMillis())
+                        }
 //                    Log.d("abba","Success")
                 }.addOnFailureListener()
                 {

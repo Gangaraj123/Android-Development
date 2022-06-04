@@ -21,6 +21,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.readychat.databinding.ActivityMainBinding
 import com.example.readychat.ui.Profile.ProfileFragment
 import com.example.readychat.ui.Profile.ProfileViewModel
+import com.example.readychat.ui.main.ImageZoom
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.User
 import com.example.readychat.ui.startups.Login

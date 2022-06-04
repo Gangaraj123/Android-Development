@@ -40,11 +40,11 @@ RecyclerView.Adapter<Request_Adapter.Request_View_Holder>(){
         holder.accept_btn.setOnClickListener(View.OnClickListener {
             Log.d("abba","Reached here bro")
             mdbref.child("users").child(curr_request.senderId)
-                .child("friends_list").child(curr_request.receiverId).setValue(curr_request.receiverName)
+                .child("friends_list").child(curr_request.receiverId).setValue(System.currentTimeMillis())
                 .addOnSuccessListener {
                     mdbref.child("users").child(curr_request.receiverId)
                         .child("friends_list").child(curr_request.senderId)
-                        .setValue(curr_request.senderName)
+                        .setValue(System.currentTimeMillis())
                         .addOnSuccessListener {
                             holder.accept_btn.isEnabled=false
                             holder.decline_btn.isEnabled=false

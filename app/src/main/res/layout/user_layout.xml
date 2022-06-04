@@ -2,49 +2,49 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_marginTop="5dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:paddingStart="10dp"
-        >
+        android:paddingStart="10dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="40dp"
-            android:layout_gravity="center"
             android:layout_height="40dp"
+            android:layout_gravity="center"
             app:cardCornerRadius="30dp">
 
             <ImageView
                 android:id="@+id/profile"
                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/unknown_profile" />
         </com.google.android.material.card.MaterialCardView>
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="vertical"
-           >
-           <TextView
-            android:id="@+id/txtview"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:text="Hi, there"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-           <TextView
-               android:layout_width="wrap_content"
-               android:text="Hey there , I am using Ready chat"
-               android:paddingStart="10dp"
-               android:layout_height="wrap_content"/>
-       </LinearLayout>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Hi, there"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:text="Hey there , I am using Ready chat" />
+        </LinearLayout>
 
         <!--    </RelativeLayout>-->
 

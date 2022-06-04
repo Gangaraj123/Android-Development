@@ -6,6 +6,7 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -29,6 +30,7 @@ class RequestsFragment : Fragment() {
     private lateinit var requestRecyclerView: RecyclerView
     private lateinit var req_adapter:Request_Adapter
     private lateinit var req_list:ArrayList<Friend_Request>
+    private lateinit var no_pending_requests:LinearLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +46,7 @@ class RequestsFragment : Fragment() {
         mdbref=FirebaseDatabase.getInstance().reference
         req_adapter= Request_Adapter(context,req_list)
         requestRecyclerView=binding.requestRecyclerview
+        no_pending_requests=binding.noPendingRequests
         requestRecyclerView.layoutManager=LinearLayoutManager(context)
         requestRecyclerView.adapter=req_adapter
         mdbref.child("users").child(FirebaseAuth.getInstance().uid!!)
@@ -53,6 +56,13 @@ class RequestsFragment : Fragment() {
                     for(x in snapshot.children)
                         req_list.add(x.getValue(Friend_Request::class.java)!!)
                     req_adapter.notifyDataSetChanged()
+                    if(req_list.size==0)
+                    {
+                        if(no_pending_requests.visibility!=View.VISIBLE)
+                            no_pending_requests.visibility=View.VISIBLE
+                    }
+                    else if(no_pending_requests.visibility==View.VISIBLE)
+                        no_pending_requests.visibility=View.GONE
                 }
 
                 override fun onCancelled(error: DatabaseError) {

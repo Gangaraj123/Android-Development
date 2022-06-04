@@ -14,7 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,93 +27,180 @@
             <EditText
                 android:id="@+id/search_box"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="100"
-                android:singleLine="true"
-                android:textSize="18sp"
-                android:inputType="text"
                 android:hint="Enter email Id to search"
-                android:layout_margin="6dp" />
+                android:inputType="text"
+
+                android:singleLine="true"
+                android:textSize="18sp" />
 
             <com.flod.loadingbutton.LoadingButton
                 android:id="@+id/search_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:layout_gravity="center"
+                android:layout_margin="5dp"
                 android:background="@drawable/solid_blue"
+                android:gravity="center"
+                android:text="search"
+                android:textSize="20sp"
+                app:disableClickOnLoading="true"
                 app:enableRestore="true"
                 app:enableShrink="true"
-                android:text="search"
-                android:gravity="center"
-                app:loadingDrawablePosition="Start"
-                android:textSize="20sp"
-                app:disableClickOnLoading="true" />
+                app:endFailDrawable="@drawable/ic_baseline_failed"
+                app:endSuccessDrawable="@drawable/ic_tick"
+                app:loadingDrawablePosition="Start" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
+        android:id="@+id/no_user_found"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searched_user_details"
+        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/materialCardView2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:text="User Not Found"
+            android:textAlignment="center"
+            android:textColor="#ff0000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searched_user_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialCardView2">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/found_user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="gangarajbopparam@gmail.com"
-                android:textSize="18sp"
-                />
+                android:textSize="18sp" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:layout_marginTop="10dp"
                 android:id="@+id/found_user_name"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/black"
-                android:text="lskjdflklskdflkj"
-                />
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/foudn_user_about"
-                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="lskjdflklskdflkj"
                 android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/foudn_user_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Hey there I am using Ready chat!"
-                />
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
             <com.flod.loadingbutton.LoadingButton
+                android:id="@+id/req_send_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/req_send_btn"
-                app:radius="50dp"
-                android:background="#00ff00"
-                android:textSize="20sp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
                 android:layout_gravity="center_horizontal"
-                app:enableShrink="true"
-                app:loadingDrawablePosition="Start"
-                app:endDrawableAppearTime="1000"
-                app:disableClickOnLoading="true"
-                android:textColor="@color/black"
-                    app:endSuccessDrawable="@drawable/ic_tick"
-                app:endFailDrawable="@drawable/ic_baseline_failed"
+                android:layout_marginTop="5dp"
+                android:background="#00ff00"
+                android:gravity="center"
                 android:text="Add Request"
-                />
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:disableClickOnLoading="true"
+                app:enableShrink="true"
+                app:endDrawableAppearTime="1000"
+                app:endFailDrawable="@drawable/ic_baseline_failed"
+                app:endSuccessDrawable="@drawable/ic_tick"
+                app:loadingDrawablePosition="Start"
+                app:radius="50dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/already_friend_user_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialCardView2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/friend_user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="gangarajbopparam@gmail.com"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/friend_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="lskjdflklskdflkj"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/friend_user_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hey there I am using Ready chat!"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/error_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Already your friend!"
+                android:textColor="#00ff00"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
