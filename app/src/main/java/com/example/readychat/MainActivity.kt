@@ -2,12 +2,16 @@ package com.example.readychat
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,13 +19,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.readychat.databinding.ActivityMainBinding
-import com.example.readychat.ui.main.ImgManager
-import com.example.readychat.ui.models.User
 import com.example.readychat.ui.Profile.ProfileFragment
 import com.example.readychat.ui.Profile.ProfileViewModel
+import com.example.readychat.ui.main.ImgManager
+import com.example.readychat.ui.models.User
 import com.example.readychat.ui.startups.Login
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.yalantis.ucrop.UCrop
@@ -37,22 +40,23 @@ class MainActivity : AppCompatActivity() {
     private val profViewModel: ProfileViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (mauth.uid == null) {
-            val intent: Intent = Intent(this@MainActivity, Login::class.java)
-            finish()
-            startActivity(intent)
-        }
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        Handler().postDelayed({
+            val sscreen=findViewById<ConstraintLayout>(R.id.start_up_screen)
+            if(sscreen!=null && sscreen.visibility== View.VISIBLE)
+                sscreen.visibility=View.GONE
+            window.statusBarColor=ContextCompat.getColor(this,R.color.blue)
+        }, 3000)
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show()
-            val intent=Intent(this@MainActivity,addFreinds::class.java)
+            val intent = Intent(this@MainActivity, addFreinds::class.java)
             startActivity(intent)
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout

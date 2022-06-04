@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mdbRef.child("users").child(mauth.uid!!).child("friends_list")
+        mdbRef.child("users").child(mauth.uid!!).child("friends_list").orderByValue()
             .addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {
                 if(loadGif.visibility==View.VISIBLE) loadGif.visibility=View.GONE

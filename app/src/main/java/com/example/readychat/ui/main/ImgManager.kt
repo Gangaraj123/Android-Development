@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.example.readychat.R
 import com.example.readychat.ui.models.Message
 import com.example.readychat.ui.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -123,7 +124,7 @@ internal object ImgManager {
                 .addOnSuccessListener { uri ->
                     val downloadUrl = uri.toString()
                     Glide.with(view.context)
-                        .load(downloadUrl)
+                        .load(downloadUrl).placeholder(R.drawable.imgload)
                         .into(view)
                 }
                 .addOnFailureListener { e ->
@@ -134,7 +135,7 @@ internal object ImgManager {
                     )
                 }
         } else {
-            Glide.with(view.context).load(url).into(view)
+            Glide.with(view.context).load(url).placeholder(R.drawable.imgload).into(view)
         }
     }
 }

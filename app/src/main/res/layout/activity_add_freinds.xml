@@ -29,19 +29,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="100"
-                android:hint="Enter email Id to serch"
-                android:minHeight="60dp"
-                android:padding="15dp" />
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:inputType="text"
+                android:hint="Enter email Id to search"
+                android:layout_margin="6dp" />
 
             <com.flod.loadingbutton.LoadingButton
                 android:id="@+id/search_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:textAlignment="center"
+                android:layout_gravity="center"
                 android:background="@drawable/solid_blue"
                 app:enableRestore="true"
+                app:enableShrink="true"
                 android:text="search"
+                android:gravity="center"
+                app:loadingDrawablePosition="Start"
                 android:textSize="20sp"
                 app:disableClickOnLoading="true" />
         </LinearLayout>
@@ -94,13 +99,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/req_send_btn"
+                app:radius="50dp"
                 android:background="#00ff00"
                 android:textSize="20sp"
-                android:layout_gravity="center"
-                app:enableRestore="true"
-                app:endSuccessDrawable="@drawable/ic_baseline_add_task_24"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                app:enableShrink="true"
+                app:loadingDrawablePosition="Start"
+                app:endDrawableAppearTime="1000"
+                app:disableClickOnLoading="true"
+                android:textColor="@color/black"
+                    app:endSuccessDrawable="@drawable/ic_tick"
                 app:endFailDrawable="@drawable/ic_baseline_failed"
-                android:text="Add request"
+                android:text="Add Request"
                 />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

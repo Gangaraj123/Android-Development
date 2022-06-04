@@ -52,7 +52,6 @@ class RequestsFragment : Fragment() {
                     req_list.clear()
                     for(x in snapshot.children)
                         req_list.add(x.getValue(Friend_Request::class.java)!!)
-                    Toast.makeText(context,"You have "+req_list.size.toString()+" requests",Toast.LENGTH_SHORT).show()
                     req_adapter.notifyDataSetChanged()
                 }
 

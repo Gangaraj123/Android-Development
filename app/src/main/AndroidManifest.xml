@@ -21,7 +21,7 @@
             android:name=".ui.main.CropperActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.startups.Login"
             android:exported="true"
             android:theme="@style/Theme.ReadyChat.NoActionBar">
             <intent-filter>
@@ -37,8 +37,8 @@
             android:name=".ui.startups.SignUp"
             android:exported="false" />
         <activity
-            android:name=".ui.startups.Login"
-            android:exported="true" />
+            android:name=".MainActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.startups.StartScreen"
             android:exported="false" />

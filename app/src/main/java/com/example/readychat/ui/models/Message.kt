@@ -1,7 +1,6 @@
 package com.example.readychat.ui.models
 
-import com.google.firebase.Timestamp
-import java.util.Date
+
 
 class Message {
     var message: String? = null

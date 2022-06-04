@@ -20,7 +20,7 @@ class addFreinds : AppCompatActivity() {
     private lateinit var search_btn: com.flod.loadingbutton.LoadingButton
     private lateinit var searchbox: EditText
     private lateinit var mdbRef: DatabaseReference
-    private lateinit var result: User
+    private var result:User?=null
     private lateinit var curr_user: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +43,7 @@ class addFreinds : AppCompatActivity() {
             mdbRef.child("users")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
+                        result=null
                         for (x in snapshot.children) {
                             if (x.child("user_details").child("email")
                                     .getValue(String::class.java)!! == email_to_search
@@ -53,19 +54,15 @@ class addFreinds : AppCompatActivity() {
                         }
                         if (result != null) {
                             search_btn.complete(true)
-                            found_user_name.text = result.name
-                            found_user_email.text = result.email
-                            found_user_about.text = result.about
-                            if (req_send_button.text != "Add request") {
-                                req_send_button.text = "Add request"
-                            }
+                            found_user_name.text = result!!.name
+                            found_user_email.text = result!!.email
+                            found_user_about.text = result!!.about
+                            req_send_button.cancel()
+
                             if (found_user_details.visibility != View.VISIBLE)
                                 found_user_details.visibility = View.VISIBLE
                             searchbox.setText("")
-                            if (req_send_button.text == "Request sent") {
-                                req_send_button.text = "Add request"
-                                req_send_button.isEnabled = true
-                            }
+                            req_send_button.isEnabled=true
                         } else {
                             if (found_user_details.visibility == View.VISIBLE)
                                 found_user_details.visibility = View.GONE
@@ -82,19 +79,22 @@ class addFreinds : AppCompatActivity() {
             req_send_button.start()
             var newrequest = Friend_Request(
                 curr_user.name,
-                result.name,
+                result?.name,
                 curr_user.uid,
-                result.uid,
+                result?.uid,
                 "",
                 curr_user.email,
-                result.email
+                result?.email
             )
             mdbRef.child("users")
-                .child(result.uid!!).child("friend_requests")
+                .child(result?.uid!!).child("friend_requests")
                 .child(curr_user.uid!!).setValue(newrequest).addOnSuccessListener {
                     req_send_button.complete(true)
-                    req_send_button.text = "Request sent"
-                    req_send_button.isEnabled = false
+                     req_send_button.isEnabled = false
+                }
+                .addOnFailureListener{
+                    req_send_button.complete(true)
+                     req_send_button.isEnabled = false
                 }
         })
     }

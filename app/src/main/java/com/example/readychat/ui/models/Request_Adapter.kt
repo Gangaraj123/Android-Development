@@ -34,7 +34,8 @@ RecyclerView.Adapter<Request_Adapter.Request_View_Holder>(){
         holder.accept_btn.isEnabled=true
         holder.decline_btn.isEnabled=true
         holder.decline_btn.setOnClickListener(View.OnClickListener {
-            Log.d("abba","Reject button is working fine!!")
+            mdbref.child("users").child(curr_request.receiverId)
+                .child("friend_requests").child(curr_request.senderId).removeValue()
         })
         holder.accept_btn.setOnClickListener(View.OnClickListener {
             Log.d("abba","Reached here bro")

@@ -55,9 +55,6 @@ class ProfileFragment : Fragment() {
                     .useSourceImageAspectRatio()
                     .withMaxResultSize(2000, 2000)
                     .start((context as Activity))
-                //                val intent=Intent(context,CropperActivity::class.java)
-//                intent.putExtra("ImageUri",curr_img_uri.toString())
-//                startActivity(intent)
 
             }
         }

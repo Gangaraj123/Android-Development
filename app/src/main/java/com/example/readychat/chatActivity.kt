@@ -13,17 +13,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.readychat.ui.main.CropperActivity
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.Message
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ChatActivity : AppCompatActivity() {
@@ -88,7 +85,9 @@ class ChatActivity : AppCompatActivity() {
         myDatabaseReference = FirebaseDatabase.getInstance().reference
         messageList = ArrayList()
         messageAdapter = MessageAdapter(messageList)
-        chatRecyclerView.layoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
+         linearLayoutManager.stackFromEnd=true
+        chatRecyclerView.layoutManager=linearLayoutManager
         chatRecyclerView.adapter = messageAdapter
         
 

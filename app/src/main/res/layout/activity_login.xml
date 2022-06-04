@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.startups.Login">
+
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/chat_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        />
+        android:src="@drawable/ic_my_app_icon" />
     <EditText
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
@@ -51,25 +51,25 @@
     <com.flod.loadingbutton.LoadingButton
         android:id="@+id/btn_login"
         android:layout_width="150dp"
+        android:layout_height="40dp"
         android:layout_below="@id/edt_password"
-        android:text="Log in"
 
-        app:endSuccessDrawable="@drawable/ic_baseline_contact_mail_24"
-        app:endFailDrawable="@drawable/ic_baseline_failed"
-        app:enableShrink="true"
-        android:gravity="center"
-        android:textSize="20sp"
-        app:loadingDrawablePosition="Start"
-        app:disableClickOnLoading="true"
-        app:endDrawableDuration="900"
-        app:radius="50dp"
-        app:enableRestore="true"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/blue"
-        android:background="@drawable/blue_background"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_height="40dp"/>
+        android:background="@drawable/blue_background"
+        android:backgroundTint="@color/blue"
+        android:gravity="center"
+        android:text="Log in"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:disableClickOnLoading="true"
+        app:enableRestore="true"
+        app:enableShrink="true"
+        app:endDrawableDuration="900"
+        app:endFailDrawable="@drawable/ic_baseline_failed"
+        app:endSuccessDrawable="@drawable/ic_tick"
+        app:loadingDrawablePosition="Start"
+        app:radius="50dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -29,6 +29,12 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         
          mAuth = FirebaseAuth.getInstance()  //initialzing firebase authentication
+        if(mAuth.uid!=null)
+        {
+            val intent=Intent(this@Login,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
          // initializing all views
         edtEmail = findViewById(R.id.edt_email)
         edtPassword = findViewById(R.id.edt_password)
