@@ -14,15 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReadyChat">
-        <activity
-            android:name=".ImageZoom"
-            android:exported="false" />
-        <activity
-            android:name=".ImagezoomView"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/title_activity_imagezoom_view"
-            android:theme="@style/Theme.ReadyChat.Fullscreen" />
+
+
         <activity
             android:name=".addFreinds"
             android:exported="false" />

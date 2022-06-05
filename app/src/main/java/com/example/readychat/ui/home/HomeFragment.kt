@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.readychat.databinding.FragmentHomeBinding
 import com.example.readychat.ui.models.User
 import com.example.readychat.ui.models.user_adapter
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -23,7 +24,7 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: user_adapter
     private lateinit var mauth: FirebaseAuth
     private lateinit var mdbRef: DatabaseReference
-    private lateinit var loadGif: pl.droidsonroids.gif.GifImageView
+    private lateinit var no_chats: MaterialCardView
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -41,11 +42,17 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
         mdbRef = FirebaseDatabase.getInstance().reference
         mauth = FirebaseAuth.getInstance()
+        no_chats = binding.noChats
+
         userList = ArrayList()
-        loadGif = binding.loading
         adapter = user_adapter(context, userList)
+
         userRecyclerView = binding.userRecyclerView
-        userRecyclerView.layoutManager = LinearLayoutManager(context)
+        val linearLayoutManager=LinearLayoutManager(context)
+        linearLayoutManager.stackFromEnd=true
+        linearLayoutManager.reverseLayout=true
+         userRecyclerView.layoutManager = linearLayoutManager
+
         userRecyclerView.adapter = adapter
         return root
     }
@@ -56,11 +63,11 @@ class HomeFragment : Fragment() {
         mdbRef.child("users").child(mauth.uid!!).child("friends_list").orderByValue()
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    if (loadGif.visibility == View.VISIBLE)
-                        loadGif.visibility = View.GONE
-                      mdbRef.child("users").child(snapshot.key!!).child("user_details")
+                    if (no_chats.visibility == View.VISIBLE)
+                        no_chats.visibility = View.GONE
+                    mdbRef.child("users").child(snapshot.key!!).child("user_details")
                         .get().addOnSuccessListener {
-                            userList.add(0, it.getValue(User::class.java)!!)
+                            userList.add( 0,it.getValue(User::class.java)!!)
                             adapter.notifyItemInserted(0)
                         }
                 }
@@ -70,15 +77,15 @@ class HomeFragment : Fragment() {
                     mdbRef.child("users").child(snapshot.key!!).child("user_details")
                         .get().addOnSuccessListener {
                             val temp = it.getValue(User::class.java)
-                            if (userList[0].uid != temp?.uid) {
+                            if (userList[userList.size-1].uid != temp?.uid) {
 
                                 for (index in 0..userList.size) {
                                     if (userList[index].uid == temp?.uid) {
                                         userList.removeAt(index)
                                         adapter.notifyItemRemoved(index)
                                         if (temp != null) {
-                                            userList.add(0, temp)
-                                            adapter.notifyItemInserted(0)
+                                            userList.add( temp)
+                                            adapter.notifyItemInserted(userList.size-1)
                                         }
                                         break
                                     }
@@ -95,7 +102,11 @@ class HomeFragment : Fragment() {
                             val index = getIndex(removeduser)
                             if (index != -1) {
                                 userList.removeAt(index)
-                                adapter.notifyItemRemoved(0)
+                                adapter.notifyItemRemoved(index)
+                                if (userList.size == 0) {
+                                    userRecyclerView.visibility = View.GONE
+                                    no_chats.visibility = View.VISIBLE
+                                }
                             }
                         }
                 }
@@ -111,7 +122,8 @@ class HomeFragment : Fragment() {
     }
 
     fun getIndex(user: User): Int {
-        for (i in 0..userList.size) {
+        val x=userList.size-1
+        for (i in 0..x) {
             if (userList[i].uid == user.uid)
                 return i
         }

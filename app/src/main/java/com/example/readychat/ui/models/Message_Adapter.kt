@@ -20,7 +20,7 @@ class MessageAdapter(private val message_list: ArrayList<Message>) :
     private val itemReceivedImg = 1
     private val itemReceivedMsg = 2
     private lateinit var temp_timeStamp: Date
-    private val simpleDateFormat = SimpleDateFormat("HH:mm aa")
+    private val simpleDateFormat = SimpleDateFormat("dd/MM/yy  hh:mm aa")
     private val itemSentImg = 3
     private var current_aimator: Animator? = null
     private var shortAnimationDuration: Int = 0
@@ -80,7 +80,7 @@ class MessageAdapter(private val message_list: ArrayList<Message>) :
             if (currentMessage.ImageUrl == null)
                 holder.sentimg.setImageResource(R.drawable.imgload)
             else
-                ImgManager.loadImageIntoView(holder.sentimg, currentMessage.ImageUrl!!)
+                ImgManager.loadImageIntoView(holder.sentimg, currentMessage.ImageUrl,false)
             holder.sentimg.setOnClickListener {
                 val intent = Intent(it.context, ImageZoom::class.java)
                 intent.putExtra("imgurl", currentMessage.ImageUrl)
@@ -103,7 +103,7 @@ class MessageAdapter(private val message_list: ArrayList<Message>) :
             if (currentMessage.ImageUrl == null)
                 holder.receiverimg.setImageResource(R.drawable.imgload)
             else
-                ImgManager.loadImageIntoView(holder.receiverimg, currentMessage.ImageUrl!!)
+                ImgManager.loadImageIntoView(holder.receiverimg, currentMessage.ImageUrl,false)
             holder.receiverimg.setOnClickListener {
                 val intent = Intent(it.context, ImageZoom::class.java)
                 intent.putExtra("imgurl", currentMessage.ImageUrl)

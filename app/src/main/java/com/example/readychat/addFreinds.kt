@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +40,9 @@ class addFreinds : AppCompatActivity() {
         found_user_name = findViewById(R.id.found_user_name)
         user_not_found = findViewById(R.id.no_user_found)
         alreadyFriend = findViewById(R.id.already_friend_user_details)
+        findViewById<ImageButton>(R.id.back_btn).setOnClickListener {
+            finish()
+        }
         alreadyfriendname = findViewById(R.id.friend_user_name)
         alreadyfriendabout = findViewById(R.id.friend_user_about)
         search_error_mgs = findViewById(R.id.error_msg)
@@ -92,7 +96,7 @@ class addFreinds : AppCompatActivity() {
                                                 alreadyFriend.visibility = View.VISIBLE
                                             if (found_user_details.visibility == View.VISIBLE)
                                                 found_user_details.visibility = View.GONE
-                                            } else {
+                                        } else {
 
                                             found_user_name.text = result!!.name
                                             found_user_email.text = result!!.email
@@ -103,14 +107,14 @@ class addFreinds : AppCompatActivity() {
                                                 found_user_details.visibility = View.VISIBLE
                                             req_send_button.cancel()
                                         }
-                                            search_btn.complete(true)
-                                if (user_not_found.visibility == View.VISIBLE)
-                                    user_not_found.visibility = View.GONE
-                                searchbox.setText("")
-                                req_send_button.isEnabled = true
+                                        search_btn.complete(true)
+                                        if (user_not_found.visibility == View.VISIBLE)
+                                            user_not_found.visibility = View.GONE
+                                        searchbox.setText("")
+                                        req_send_button.isEnabled = true
 
                                     }
-                                    .addOnFailureListener{
+                                    .addOnFailureListener {
                                         search_btn.complete(false)
                                         if (user_not_found.visibility != View.VISIBLE)
                                             user_not_found.visibility = View.VISIBLE

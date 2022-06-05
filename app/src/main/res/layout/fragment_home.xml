@@ -3,24 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/home_fragment"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/loading"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/loading"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/no_chats"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+         android:layout_height="wrap_content"
+        android:backgroundTint="@color/teal_200"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:text="Your Friend list is Emtpy"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:padding="10dp"
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:text="Click button at right bottom to add friends or check if there are any
+friend requests"
+                android:layout_marginBottom="10dp"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         tools:listitem="@layout/user_layout" />
 
