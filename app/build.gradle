@@ -65,6 +65,7 @@ dependencies {
     implementation 'com.github.FlodCoding:LoadingButton:1.1.0-alpha01'
      implementation 'com.github.yalantis:ucrop:2.2.6'
     implementation 'com.github.MikeOrtiz:TouchImageView:1.4.1'
+
 }
 repositories {
     mavenCentral()

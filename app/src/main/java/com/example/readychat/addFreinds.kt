@@ -1,8 +1,13 @@
 package com.example.readychat
 
+import android.animation.Animator
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewAnimationUtils
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -13,6 +18,7 @@ import com.example.readychat.ui.models.User
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+
 
 class addFreinds : AppCompatActivity() {
     private lateinit var found_user_details: MaterialCardView
@@ -30,18 +36,35 @@ class addFreinds : AppCompatActivity() {
     private lateinit var search_error_mgs: TextView
     private lateinit var mdbRef: DatabaseReference
     private var result: User? = null
+    private lateinit var background: View
     private lateinit var curr_user: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(R.drawable.nothing, R.drawable.nothing)
         setContentView(R.layout.activity_add_freinds)
-        found_user_about = findViewById(R.id.foudn_user_about)
+        background = findViewById(R.id.my_addfriend_layout)
+        if (savedInstanceState == null) {
+            background.visibility = View.INVISIBLE
+            val viewTreeObserver = background.viewTreeObserver
+
+            if (viewTreeObserver.isAlive) {
+                viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        circularRevealActivity()
+                        background.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
+            }
+        }
+
+            found_user_about = findViewById(R.id.foudn_user_about)
         found_user_details = findViewById(R.id.searched_user_details)
         found_user_email = findViewById(R.id.found_user_email)
         found_user_name = findViewById(R.id.found_user_name)
         user_not_found = findViewById(R.id.no_user_found)
         alreadyFriend = findViewById(R.id.already_friend_user_details)
         findViewById<ImageButton>(R.id.back_btn).setOnClickListener {
-            finish()
+            onBackPressed()
         }
         alreadyfriendname = findViewById(R.id.friend_user_name)
         alreadyfriendabout = findViewById(R.id.friend_user_about)
@@ -165,4 +188,50 @@ class addFreinds : AppCompatActivity() {
                 }
         })
     }
+
+    private fun circularRevealActivity() {
+        val cx = background.right - getDips(44)
+        val cy = background.bottom - getDips(44)
+        val finalRadius = background.width.coerceAtLeast(background.height).toFloat()
+        val circularReveal = ViewAnimationUtils.createCircularReveal(
+            background,
+            cx,
+            cy, 0f,
+            finalRadius
+        )
+        circularReveal.duration = 300
+        background.visibility = View.VISIBLE
+        circularReveal.start()
+    }
+
+    private fun getDips(dps: Int): Int {
+        val resources: Resources = resources
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dps.toFloat(),
+            resources.displayMetrics
+        ).toInt()
+    }
+
+    override fun onBackPressed() {
+        val cx: Int = background.width - getDips(44)
+        val cy: Int = background.bottom - getDips(44)
+        val finalRadius: Int = background.width.coerceAtLeast(background.height)
+        val circularReveal: Animator =
+            ViewAnimationUtils.createCircularReveal(background, cx, cy, finalRadius.toFloat(), 0f)
+        circularReveal.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animator: Animator?) {}
+            override fun onAnimationEnd(animator: Animator?) {
+                background.visibility = View.INVISIBLE
+                finish()
+            }
+
+            override fun onAnimationCancel(animator: Animator?) {}
+            override fun onAnimationRepeat(animator: Animator?) {}
+        })
+        circularReveal.duration = 300
+        circularReveal.start()
+    }
+
+
 }

@@ -9,6 +9,8 @@
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/blue_background.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/blue_background_btn.xml" value="0.17" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/blue_btn.xml" value="0.17" />
+        <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/bottom_down.xml" value="0.1235" />
+        <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/bottom_up.xml" value="0.1235" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/circular.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/circular_spinner.xml" value="0.17" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/dark_black_bg.xml" value="0.172" />
@@ -31,12 +33,14 @@
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/img_background.xml" value="0.17" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/layout_circular.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/message_box_bg.xml" value="0.1735" />
+        <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/nothing.xml" value="0.1235" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/options.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/red_btn.xml" value="0.17" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/select_image.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/shadow.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/solid_blue.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/solid_white.xml" value="0.1735" />
+        <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/topup.xml" value="0.1235" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/drawable/white_background.xml" value="0.1735" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/layout/action_bar_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/rajini bopparam/Downloads/Readychat/app/src/main/res/layout/activity_add_freinds.xml" value="0.22083333333333333" />

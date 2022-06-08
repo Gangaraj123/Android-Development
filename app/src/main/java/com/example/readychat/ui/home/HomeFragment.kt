@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,7 @@ class HomeFragment : Fragment() {
     private lateinit var mauth: FirebaseAuth
     private lateinit var mdbRef: DatabaseReference
     private lateinit var no_chats: MaterialCardView
-
+    private lateinit var progress:ProgressBar
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -46,7 +47,7 @@ class HomeFragment : Fragment() {
 
         userList = ArrayList()
         adapter = user_adapter(context, userList)
-
+        progress=binding.loadingProgressBar
         userRecyclerView = binding.userRecyclerView
         val linearLayoutManager=LinearLayoutManager(context)
         linearLayoutManager.stackFromEnd=true
@@ -60,11 +61,24 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("abba", "But reached here")
+        mdbRef.child("users").child(mauth.uid!!).child("friends_list").get()
+            .addOnSuccessListener {
+                if(!it.exists())
+                {
+                    progress.visibility=View.GONE;
+                    no_chats.visibility=View.VISIBLE
+                }
+            }
+
         mdbRef.child("users").child(mauth.uid!!).child("friends_list").orderByValue()
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    if(progress.visibility==View.VISIBLE)
+                        progress.visibility=View.GONE
                     if (no_chats.visibility == View.VISIBLE)
                         no_chats.visibility = View.GONE
+                    if(userRecyclerView.visibility!=View.VISIBLE)
+                        userRecyclerView.visibility=View.VISIBLE
                     mdbRef.child("users").child(snapshot.key!!).child("user_details")
                         .get().addOnSuccessListener {
                             userList.add( 0,it.getValue(User::class.java)!!)

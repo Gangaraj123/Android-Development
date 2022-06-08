@@ -21,7 +21,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.readychat.databinding.ActivityMainBinding
 import com.example.readychat.ui.Profile.ProfileFragment
 import com.example.readychat.ui.Profile.ProfileViewModel
-import com.example.readychat.ui.main.ImageZoom
 import com.example.readychat.ui.main.ImgManager
 import com.example.readychat.ui.models.User
 import com.example.readychat.ui.startups.Login
@@ -46,11 +45,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         Handler().postDelayed({
-            val sscreen=findViewById<ConstraintLayout>(R.id.start_up_screen)
-            if(sscreen!=null && sscreen.visibility== View.VISIBLE)
-                sscreen.visibility=View.GONE
-            window.statusBarColor=ContextCompat.getColor(this,R.color.blue)
-        }, 3000)
+            val sscreen = findViewById<ConstraintLayout>(R.id.start_up_screen)
+            if (sscreen != null && sscreen.visibility == View.VISIBLE)
+                sscreen.visibility = View.GONE
+            window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+        }, 1500)
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
